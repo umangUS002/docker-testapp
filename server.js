@@ -1,16 +1,14 @@
 const express = require("express");
 const { MongoClient } = require("mongodb");
+require("dotenv").config();
 
 const app = express();
-const PORT = 5050;
+const PORT = process.env.PORT || 5050;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const MONGO_URL =
-  "mongodb://admin:qwerty@127.0.0.1:27017/apnacollege-db?authSource=admin";
-
-const client = new MongoClient(MONGO_URL);
+const client = new MongoClient(process.env.MONGO_URL);
 let db;
 
 async function start() {
