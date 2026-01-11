@@ -1,12 +1,17 @@
 const express = require("express");
 const { MongoClient } = require("mongodb");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 5050;
 
+// ✅ Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ✅ Serve static files (this already serves /index.html)
+app.use(express.static(path.join(__dirname, "public")));
 
 const client = new MongoClient(process.env.MONGO_URL);
 let db;
@@ -17,6 +22,7 @@ async function start() {
 
   db = client.db("apnacollege-db");
 
+  // ✅ API routes
   app.get("/getUsers", async (req, res) => {
     const users = await db.collection("users").find({}).toArray();
     res.json(users);
